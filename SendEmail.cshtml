@@ -1,0 +1,41 @@
+﻿@using System.Text;
+@using System.Net.Mail;
+@using System.Net;
+@{
+    
+    // leemos la entrada del formulario:
+    var nombreCliente = Request["nombre"];
+    var telefonoCliente = Request["telefono"];
+    var correoCliente = Request["correo"];
+    var consultaCliente = Request["consulta"];
+    try
+    {
+        //Configuración del Mensaje
+        MailMessage mail = new MailMessage();
+        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+        //Especificamos el correo desde el que se enviará el Email y el nombre de la persona que lo envía
+        mail.From = new MailAddress("nash.makineta@gmail.com", "Consultas Choza", Encoding.UTF8);
+        //Aquí ponemos el asunto del correo
+        mail.Subject = "Consulta de un cliente por la web";
+        //Aquí ponemos el mensaje que incluirá el correo
+        mail.Body = "Nombre del cliente: " + nombreCliente + 
+        "\n\nTeléfono: " + telefonoCliente + 
+        "\n\nCorreo electrónico: " + correoCliente + 
+        "\n\nConsulta:\n" + consultaCliente;
+        //Especificamos a quien enviaremos el Email, no es necesario que sea Gmail, puede ser cualquier otro proveedor
+        mail.To.Add("grupochoza@yahoo.com");
+        //Si queremos enviar archivos adjuntos tenemos que especificar la ruta en donde se encuentran
+        //mail.Attachments.Add(new Attachment(@"C:\Documentos\carta.docx"));
+        //Configuracion del SMTP
+        SmtpServer.Port = 587; //Puerto que utiliza Gmail para sus servicios
+        //Especificamos las credenciales con las que enviaremos el mail
+        SmtpServer.Credentials = new System.Net.NetworkCredential("nash.makineta@gmail.com", "*stitch1*");
+        SmtpServer.EnableSsl = true;
+        SmtpServer.Send(mail);
+    }
+    catch (Exception ex)
+    {
+        <text>@ex</text>
+    }
+    
+}

@@ -1,0 +1,13 @@
+﻿@{ // Read input
+var customerEmail = Request["customerEmail"];
+var customerRequest = Request["customerRequest"];
+try
+{
+// Send email
+WebMail.Send(to:"almorranaferoz@gmail.com", subject: "Help request from - " + customerEmail, body: customerRequest );
+}
+catch (Exception ex )
+{
+<text>@ex</text>
+}
+} 
